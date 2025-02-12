@@ -1,4 +1,4 @@
-Feature: Test the-internet.herokuapp.com
+Feature: Test the-internet.herokuapp.com application
 
   Scenario: Verify the title of the home page
     Given I launch the URL "http://the-internet.herokuapp.com/"
