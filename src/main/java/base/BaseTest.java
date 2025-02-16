@@ -13,7 +13,7 @@ public class BaseTest {
     protected WebDriver getDriver() {
         return driver;
     }
-// Compare this snippet from all_Assignments/assessment_4_MakeMyTripAutomation.java:
+
     @Before
     public void setUp() {
         WebDriverManager.chromedriver().setup();
