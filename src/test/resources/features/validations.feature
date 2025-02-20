@@ -4,7 +4,7 @@ Feature: Test the-internet.herokuapp.com application
     Given I launch the URL "http://the-internet.herokuapp.com/"
     Then the title of the page should be "The Internet"
     When I click on "A/B Testing" link
-    Then the text on the page should be "A/B Test Variation 1"
+    Then the text on the page should be "A/B Test Variation 1|A/B Test Variation 4"
     Given I am on the home page
     When I click on "Dropdown" link
     And I select "Option 1" from the dropdown

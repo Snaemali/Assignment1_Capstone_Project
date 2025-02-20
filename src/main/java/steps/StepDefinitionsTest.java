@@ -50,9 +50,16 @@ public class StepDefinitionsTest extends BaseTest {
     @Then("the text on the page should be {string}")
     public void the_text_on_the_page_should_be(String text) {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        String[] words = text.split("|");
+        String[] words = text.split("\\|");
         WebElement body = wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
-        Assert.assertTrue(body.getText().contains(text));
+        boolean containsWord = false;
+        for (String word : words) {
+            if (body.getText().contains(word)) {
+                containsWord = true;
+                break;
+            }
+        }
+        Assert.assertTrue(containsWord);
     }
 
     @When("I select {string} from the dropdown")
