@@ -14,8 +14,10 @@ import org.testng.Assert;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class StepDefinitionsTest extends BaseTest {
+    private static final Logger logger = Logger.getLogger(StepDefinitionsTest.class.getName());
 
     @Before
     public void setUp() {
@@ -29,6 +31,7 @@ public class StepDefinitionsTest extends BaseTest {
 
     @Given("I launch the URL {string}")
     public void i_launch_the_url(String url) {
+        logger.info("Launching URL: " + url);
         getDriver().get(url);
     }
 
@@ -45,21 +48,26 @@ public class StepDefinitionsTest extends BaseTest {
     @When("I click on {string} link")
     public void i_click_on_link(String linkText) {
         getDriver().findElement(By.linkText(linkText)).click();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
-
     @Then("the text on the page should be {string}")
     public void the_text_on_the_page_should_be(String text) {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        String[] words = text.split("\\|");
         WebElement body = wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
-        boolean containsWord = false;
-        for (String word : words) {
-            if (body.getText().contains(word)) {
-                containsWord = true;
+        String[] expectedTexts = text.split("\\|");
+        boolean textFound = false;
+        for (String expectedText : expectedTexts) {
+            System.out.println("Actual text: " + body.getText()+ "Expected text: " + expectedText);
+            if (body.getText().contains(expectedText)) {
+                textFound = true;
                 break;
             }
         }
-        Assert.assertTrue(containsWord);
+        Assert.assertTrue(textFound, "Expected text not found on the page");
     }
 
     @When("I select {string} from the dropdown")
@@ -81,4 +89,5 @@ public class StepDefinitionsTest extends BaseTest {
             Assert.assertTrue(getDriver().findElement(By.linkText(link)).isDisplayed());
         }
     }
+
 }

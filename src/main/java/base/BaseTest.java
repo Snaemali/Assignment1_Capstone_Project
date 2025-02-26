@@ -1,31 +1,38 @@
 package base;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class BaseTest {
-    private WebDriver driver;
+    private static WebDriver driver;
 
-    protected WebDriver getDriver() {
+    public static WebDriver getDriver() {
+        if (driver == null) {
+            WebDriverManager.chromedriver().setup();
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--start-maximized");
+            options.addArguments("--ignore-certificate-errors");
+            options.addArguments("--disable-web-security");
+            options.addArguments("--allow-running-insecure-content");
+            driver = new ChromeDriver(options);
+        }
         return driver;
     }
-// Compare this snippet from all_Assignments/assessment_4_MakeMyTripAutomation.java:
-    @Before
-    public void setUp() {
-        WebDriverManager.chromedriver().setup();
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-        driver = new ChromeDriver(options);
-    }
 
-    @After
-    public void tearDown() {
+    public static void quitDriver() {
         if (driver != null) {
             driver.quit();
+            driver = null;
         }
+    }
+
+    public void setUp() {
+        getDriver();
+    }
+
+    public void tearDown() {
+        quitDriver();
     }
 }
